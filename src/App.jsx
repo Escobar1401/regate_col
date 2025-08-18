@@ -1,5 +1,5 @@
 import "./App.css"
-import { HashRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Header from "./components/Header"
 import HeroSection from "./components/Hero"
 import Footer from "./components/Footer"

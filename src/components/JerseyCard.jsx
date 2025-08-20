@@ -100,7 +100,7 @@ function JerseyCard(props) {
               <div
                 key={talla}
                 className={`h-6 rounded-full border border-gray-300 text-gray-600 text-xs px-2 flex items-center justify-center cursor-pointer hover:scale-110 transition-transform ${
-                  selectedSize === talla ? 'bg-orange-500 text-white' : ''
+                  selectedSize === talla ? 'bg-gradient-to-r from-orange-500 to-orange-700 text-white' : ''
                 }`}
                 onClick={() => (selectedSize === talla ? setSelectedSize(null) : setSelectedSize(talla))}
               >
@@ -126,13 +126,21 @@ function JerseyCard(props) {
             >
               Detalles
             </Link> */}
-            <button
-              disabled={!selectedSize}
-              className={`${!selectedSize ? 'w-full bg-gradient-to-r from-gray-600 to-gray-600 hover:from-gray-700 hover:to-gray-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center' : 'w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center'}`}
+            {selectedSize ? (
+              <button
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center"
               onClick={handleBuy}
             >
               Comprar
             </button>
+            ) : (
+              <button
+              className="w-full bg-gradient-to-r from-gray-400 to-gray-600 text-gray-600 font-semibold py-3 rounded-lg cursor-not-allowed text-center"
+              onClick={handleBuy}
+            >
+              Comprar
+            </button>
+            )}
             <button
               className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold p-2 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center"
             >

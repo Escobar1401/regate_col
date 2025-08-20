@@ -1,15 +1,40 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import mockCamisetas from "../assets/mockCamisetas.json";
+import left from "../assets/left.svg";
+import right from "../assets/right.svg";
 
 function JerseyDetails() {
     const { id } = useParams();
     const [jersey, setJersey] = useState(null);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isTransitioning, setIsTransitioning] = useState(false);
+
+    const imageKeys = jersey ? Object.keys(jersey).filter(key => key.startsWith('imagen')) : [];
+
+    const goToNextImage = () => {
+        if (isTransitioning) return;
+        setIsTransitioning(true);
+        setCurrentImageIndex((prevIndex) => 
+            prevIndex === imageKeys.length - 1 ? 0 : prevIndex + 1
+        );
+        setTimeout(() => setIsTransitioning(false), 300);
+    };
+
+    const goToPrevImage = () => {
+        if (isTransitioning) return;
+        setIsTransitioning(true);
+        setCurrentImageIndex((prevIndex) => 
+            prevIndex === 0 ? imageKeys.length - 1 : prevIndex - 1
+        );
+        setTimeout(() => setIsTransitioning(false), 300);
+    };
 
     useEffect(() => {
         // Buscar la camiseta por ID
         const foundJersey = mockCamisetas.find(item => item.id === parseInt(id));
         setJersey(foundJersey);
+        setCurrentImageIndex(0);
     }, [id]);
 
     if (!jersey) {
@@ -51,8 +76,8 @@ function JerseyDetails() {
                     </div>
 
                     {/* Galería de imágenes */}
-                    <div className="w-full md:w-1/2 p-4 md:p-8">
-                        <div className="flex flex-col md:flex-row gap-4">
+                    <div className="w-full md:w-1/2 p-4 md:p-8 relative">
+                        <div className="flex flex-col md:flex-row">
                             {/* Miniaturas - En móvil: fila, en desktop: columna a la izquierda */}
                             <div className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[500px] py-2 md:py-0 md:w-28">
                                 {Object.keys(jersey).filter(key => key.startsWith('imagen')).map((key) => (
@@ -70,11 +95,29 @@ function JerseyDetails() {
                             </div>
                             
                             {/* Imagen principal */}
-                            <div className="w-full">
+                            <div className="w-full relative">
+                                <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10">
+                                    <button 
+                                        className="p-2 rounded-full bg-white/80 hover:bg-gray-100 transition-colors shadow-md"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                        </svg>
+                                    </button>
+                                </div>
                                 <img
                                     src={jersey.imagenPrincipal}
                                     className="w-full h-auto max-h-[500px] object-contain rounded-lg mx-auto"
                                 />
+                                <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10">
+                                    <button 
+                                        className="p-2 rounded-full bg-white/80 hover:bg-gray-100 transition-colors shadow-md"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

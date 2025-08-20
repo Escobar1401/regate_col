@@ -55,14 +55,14 @@ function JerseyDetails() {
                         <div className="flex flex-col md:flex-row gap-4">
                             {/* Miniaturas - En móvil: fila, en desktop: columna a la izquierda */}
                             <div className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[500px] py-2 md:py-0 md:w-28">
-                                {[1, 2, 3, 4, 5, 6].map((num) => (
+                                {Object.keys(jersey).filter(key => key.startsWith('imagen')).map((key) => (
                                     <button
-                                        key={num}
-                                        onClick={() => setJersey({...jersey, imagenPrincipal: jersey[`imagen${num}`]})}
-                                        className="flex-shrink-0 w-16 h-16 cursor-pointer md:w-20 md:h-20 overflow-hidden rounded-lg hover:opacity-80 transition-opacity border-2 border-transparent hover:border-blue-500"
+                                        key={key}
+                                        onClick={() => setJersey({...jersey, imagenPrincipal: jersey[key]})}
+                                        className="flex-shrink-0 w-16 h-16 cursor-pointer md:max-w-20 md:max-h-20 overflow-hidden rounded-lg hover:opacity-80 transition-opacity border-2 border-transparent hover:border-blue-500"
                                     >
                                         <img
-                                            src={jersey[`imagen${num}`]}
+                                            src={jersey[key]}
                                             className="w-full h-full object-cover"
                                         />
                                     </button>

@@ -2,11 +2,30 @@
 // import heart from "../assets/heart.svg";
 import addCart from "../assets/addCart.svg";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 function JerseyCard(props) {
   const Stock = props.stock;
   const createdAt = props.createdAt;
   const Offer = props.Offer;
+  const phoneNumber = "573245111382";
+
+  //Funcion para hacer la compra de la camiseta enviando un mensaje de whatsapp
+  const [selectedSize, setSelectedSize] = useState(null);
+
+  //Funcion para seleccionar y deseleccionar la talla
+  const handleSizeSelect = (size) => {
+    setSelectedSize(size);
+  }
+
+  const handleBuy = () => {
+    if (selectedSize) {
+      const message = `Hola, estoy interesad@ en la camiseta del equipo ${props.equipo} - ${props.tipo} - ${props.temporada} - en la talla ${selectedSize}`;
+      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    }
+  }
+  
   return (
     <>
       <div className="bg-white rounded-xl">
@@ -48,7 +67,7 @@ function JerseyCard(props) {
           <Link to={`/jersey/${props.id}`} className="w-full h-full transition-all duration-700">
             <div className="relative w-full h-full transition-transform duration-600">
               <img
-                src={props.imagen}
+                src={props.imagenPrincipal}
                 className="w-full h-full object-contain cursor-pointer transform transition-all duration-300 hover:scale-105"
               />
             </div>
@@ -80,7 +99,10 @@ function JerseyCard(props) {
             {props.talla.map((talla) => (
               <div
                 key={talla}
-                className="h-6 rounded-full border border-gray-300 text-gray-600 text-xs px-2 flex items-center justify-center cursor-pointer hover:scale-110 transition-transform"
+                className={`h-6 rounded-full border border-gray-300 text-gray-600 text-xs px-2 flex items-center justify-center cursor-pointer hover:scale-110 transition-transform ${
+                  selectedSize === talla ? 'bg-orange-500 text-white' : ''
+                }`}
+                onClick={() => (selectedSize === talla ? setSelectedSize(null) : setSelectedSize(talla))}
               >
                 <p>{talla}</p>
               </div>
@@ -105,7 +127,9 @@ function JerseyCard(props) {
               Detalles
             </Link> */}
             <button
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center"
+              disabled={!selectedSize}
+              className={`${!selectedSize ? 'w-full bg-gradient-to-r from-gray-600 to-gray-600 hover:from-gray-700 hover:to-gray-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center' : 'w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center'}`}
+              onClick={handleBuy}
             >
               Comprar
             </button>

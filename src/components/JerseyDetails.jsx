@@ -17,7 +17,7 @@ function JerseyDetails() {
     }
 
     return (
-        <div className="mx-auto p-4">
+        <div className="mx-auto w-full p-4">
             <Link
                 to="/"
                 className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6"
@@ -50,12 +50,33 @@ function JerseyDetails() {
                         </div>
                     </div>
 
-                    {/* Imagen de la camiseta */}
-                    <div className="md:w-1/2 p-8">
-                        <img
-                            src={jersey.imagen}
-                            className="w-full h-auto object-cover rounded-lg"
-                        />
+                    {/* Galería de imágenes */}
+                    <div className="w-full md:w-1/2 p-4 md:p-8">
+                        <div className="flex flex-col md:flex-row gap-4">
+                            {/* Miniaturas - En móvil: fila, en desktop: columna a la izquierda */}
+                            <div className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[500px] py-2 md:py-0 md:w-28">
+                                {[1, 2, 3, 4, 5, 6].map((num) => (
+                                    <button
+                                        key={num}
+                                        onClick={() => setJersey({...jersey, imagenPrincipal: jersey[`imagen${num}`]})}
+                                        className="flex-shrink-0 w-16 h-16 cursor-pointer md:w-20 md:h-20 overflow-hidden rounded-lg hover:opacity-80 transition-opacity border-2 border-transparent hover:border-blue-500"
+                                    >
+                                        <img
+                                            src={jersey[`imagen${num}`]}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </button>
+                                ))}
+                            </div>
+                            
+                            {/* Imagen principal */}
+                            <div className="w-full">
+                                <img
+                                    src={jersey.imagenPrincipal}
+                                    className="w-full h-auto max-h-[500px] object-contain rounded-lg mx-auto"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     {/* Información de la camiseta */}
@@ -70,9 +91,9 @@ function JerseyDetails() {
                                 {new Intl.NumberFormat('es-CO', {
                                     style: 'currency',
                                     currency: 'COP'
-                                }).format(jersey.precio-(jersey.precio*jersey.Offer))}
+                                }).format(jersey.precio - (jersey.precio * (jersey.Offer*(jersey.stock<4?1:0))))}
                             </span>
-                            {jersey.Offer > 0 && (
+                            {jersey.stock < 4 && jersey.Offer > 0 && (
                                 <span className="ml-4 text-s text-red-500 line-through">
                                     {new Intl.NumberFormat('es-CO', {
                                         style: 'currency',
@@ -80,6 +101,7 @@ function JerseyDetails() {
                                     }).format(jersey.precio)}
                                 </span>
                             )}
+                            <span className="ml-4 text-s text-green-500">{jersey.stock} unidades disponibles</span>
                         </div>
 
                         <div className="mb-6">

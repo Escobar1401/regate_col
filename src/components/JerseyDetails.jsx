@@ -125,7 +125,7 @@ function JerseyDetails() {
                     {/* Información de la camiseta */}
                     <div className="md:w-1/2 p-8">
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                            {jersey.equipo} - {jersey.tipo}
+                            {jersey.equipo} - {jersey.tipo} {jersey.kit}
                         </h1>
                         <p className="text-lg text-gray-600">{jersey.liga}</p>
                         <p className="text-lg text-gray-600 mb-4">{jersey.temporada}</p>

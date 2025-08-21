@@ -21,7 +21,7 @@ function JerseyCard(props) {
     if (selectedSize) {
       const phoneNumber = "573245111382";
       // Construir la URL de la página de detalles
-      const detailsUrl = `${window.location.origin}/jersey/${props.id}`;
+      const detailsUrl = `${window.location.origin}/regate_col/jersey/${props.id}`;
       
       const message = `Hola,%0A%0A` +
         `*¡Estoy interesad@ en una camiseta!*%0A%0A` +

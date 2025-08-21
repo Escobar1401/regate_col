@@ -43,10 +43,10 @@ const mockCamisetas = [
 
                         <div className="flex flex-col sm:flex-row gap-4">
                             <button className="bg-orange-500 text-white font-bold px-8 py-2 text-lg hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl cursor-pointer rounded-2xl">
-                                <div className="h-5 w-5 mr-2" /> Explorar Colección
+                                <a href="" className="h-5 w-5 mr-2" /> Explorar Colección
                             </button>
                             <button className="border-2 bg-white font-bold text-blue-900 hover:bg-white/80 hover:text-blue-900 px-8 py-2 text-lg transition-all duration-300 transform hover:scale-105 cursor-pointer rounded-2xl">
-                                <div className="h-5 w-5 mr-2" /> Ofertas Especiales
+                                <a href="" className="h-5 w-5 mr-2" /> Ofertas Especiales
                             </button>
                         </div>
 

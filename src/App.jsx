@@ -14,8 +14,12 @@ function App() {
                 <Routes>
                     <Route path="/" element={
                         <>
+                        <div id="hero">
                             <HeroSection />
+                        </div>
+                        <div id="shop">
                             <ShopSection />
+                        </div>
                             <Footer />
                         </>
                     } />

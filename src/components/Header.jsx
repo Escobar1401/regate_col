@@ -13,8 +13,8 @@ function Header() {
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#" className="hover:text-orange-400 transition-colors duration-300 font-medium">Inicio</a>
-            <a href="#" className="hover:text-orange-400 transition-colors duration-300 font-medium">Camisetas</a>
+            <a href="#hero" className="hover:text-orange-400 transition-colors duration-300 font-medium">Inicio</a>
+            <a href="#shop" className="hover:text-orange-400 transition-colors duration-300 font-medium">Camisetas</a>
             <a href="#" className="hover:text-orange-400 transition-colors duration-300 font-medium">Equipos</a>
             <a href="#" className="hover:text-orange-400 transition-colors duration-300 font-medium">Ofertas</a>
           </nav>

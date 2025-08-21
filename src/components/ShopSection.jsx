@@ -4,11 +4,15 @@ import { useState, useEffect } from "react";
 
 function ShopSection() {
     const [jerseys, setJerseys] = useState([]);
-    const [visibleCount, setVisibleCount] = useState(4);
+    const [visibleCount, setVisibleCount] = useState(12);
     const [searchQuery, setSearchQuery] = useState("");
+    const [filters, setFilters] = useState({
+        oferta: false,
+        nueva: false
+    });
 
     useEffect(() => {
-        // Cargar solo las primeras 4 camisetas
+        // Cargar solo las primeras 12 camisetas
         setJerseys(mockCamisetas.slice(0, visibleCount));
     }, [visibleCount]);
 
@@ -22,15 +26,52 @@ function ShopSection() {
         setVisibleCount(prevCount => prevCount - 4);
     }
 
+    //Funcion para buscar camisetas por nombre, tipo o liga
     const handleSearch = (e) => {
         setSearchQuery(e.target.value);
         const filteredJerseys = mockCamisetas.filter(jersey => 
             jersey.equipo.toLowerCase().includes(searchQuery.toLowerCase()) ||
             jersey.tipo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            jersey.kit.toLowerCase().includes(searchQuery.toLowerCase()) ||
             jersey.liga.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setJerseys(filteredJerseys);
     }
+
+    // Funcion para manejar cambios en los checkboxes
+    const handleFilterChange = (e) => {
+        const { id, checked } = e.target;
+        setFilters(prev => ({
+            ...prev,
+            [id]: checked
+        }));
+    };
+
+    // Efecto para aplicar filtros cuando cambian los checkboxes o la búsqueda
+    useEffect(() => {
+        let filteredJerseys = [...mockCamisetas];
+        
+        // Aplicar filtro de búsqueda si hay texto
+        if (searchQuery) {
+            filteredJerseys = filteredJerseys.filter(jersey => 
+                jersey.equipo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                jersey.tipo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                jersey.kit.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                jersey.liga.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+        
+        // Aplicar filtros de checkboxes si están activos
+        if (filters.oferta || filters.nueva) {
+            filteredJerseys = filteredJerseys.filter(jersey => {
+                const isOffer = filters.oferta && (jersey.stock < 3 && jersey.stock > 1) && jersey.Offer > 0;
+                const isNew = filters.nueva && jersey.stock > 3;
+                return isOffer || isNew || (!filters.oferta && !filters.nueva);
+            });
+        }
+        
+        setJerseys(filteredJerseys.slice(0, visibleCount));
+    }, [searchQuery, filters, visibleCount]);
 
     return (
         <section className="py-20 bg-gradient-to-b from-white to-gray-200">
@@ -46,7 +87,7 @@ function ShopSection() {
                     </p>
                 </div>
 
-                {/* Barra de búsqueda */}
+                {/* Barra de búsqueda y filtros */}
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-12 gap-4">
                     <div className="flex items-center gap-4">
                         <input 
@@ -55,6 +96,24 @@ function ShopSection() {
                             className="px-4 py-2 cursor-pointer border border-gray-300 rounded-lg bg-gray-300 text-black h-12 w-80" 
                             onChange={handleSearch}
                         />
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <input 
+                            type="checkbox" 
+                            id="oferta" 
+                            checked={filters.oferta}
+                            onChange={handleFilterChange} 
+                            className="w-4 h-4 text-blue-600 rounded"
+                        />
+                        <label htmlFor="oferta" className="cursor-pointer">En Oferta</label>
+                        <input 
+                            type="checkbox" 
+                            id="nueva" 
+                            checked={filters.nueva}
+                            onChange={handleFilterChange}
+                            className="w-4 h-4 text-blue-600 rounded"
+                        />
+                        <label htmlFor="nueva" className="cursor-pointer">Nueva</label>
                     </div>
                 </div>
 

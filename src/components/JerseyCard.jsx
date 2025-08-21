@@ -8,8 +8,7 @@ function JerseyCard(props) {
   const Stock = props.stock;
   const createdAt = props.createdAt;
   const Offer = props.Offer;
-  const phoneNumber = "573245111382";
-
+  
   //Funcion para hacer la compra de la camiseta enviando un mensaje de whatsapp
   const [selectedSize, setSelectedSize] = useState(null);
 
@@ -20,8 +19,22 @@ function JerseyCard(props) {
 
   const handleBuy = () => {
     if (selectedSize) {
-      const message = `Hola, estoy interesad@ en la camiseta del equipo ${props.equipo} - ${props.tipo} - ${props.temporada} - en la talla ${selectedSize}`;
-      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+      const phoneNumber = "573245111382";
+      // Construir la URL de la página de detalles
+      const detailsUrl = `${window.location.origin}/jersey/${props.id}`;
+      
+      const message = `Hola,%0A%0A` +
+        `*¡Estoy interesad@ en una camiseta!*%0A%0A` +
+        `*Equipo:* ${props.equipo}%0A` +
+        `*Tipo:* ${props.tipo}%0A` +
+        `*Kit:* ${props.kit}%0A` +
+        `*Temporada:* ${props.temporada}%0A` +
+        `*Talla seleccionada:* ${selectedSize}%0A%0A` +
+        `Esta es la camiseta:%0A${detailsUrl}%0A%0A` +
+        `¡Gracias!`;
+      
+      // Abrir WhatsApp con el mensaje
+      const url = `https://wa.me/${phoneNumber}?text=${message}`;
       window.open(url, '_blank');
     }
   }
@@ -77,7 +90,7 @@ function JerseyCard(props) {
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
         </div>
 
-        {/* Content */}
+        {/* Contenido */}
         <div className="p-6">
           <div className="mb-2 flex justify-between items-center gap-2">
             <p className="text-sm text-indigo-600 font-semibold">{props.liga}</p>

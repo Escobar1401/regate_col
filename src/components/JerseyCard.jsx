@@ -23,14 +23,16 @@ function JerseyCard(props) {
       // Construir la URL de la página de detalles
       const detailsUrl = `${window.location.origin}/regate_col/jersey/${props.id}`;
       
-      const message = `Hola,%0A%0A` +
-        `*¡Estoy interesad@ en una camiseta!*%0A%0A` +
-        `*Equipo:* ${props.equipo}%0A` +
-        `*Tipo:* ${props.tipo}%0A` +
-        `*Kit:* ${props.kit}%0A` +
-        `*Temporada:* ${props.temporada}%0A` +
-        `*Talla seleccionada:* ${selectedSize}%0A%0A` +
-        `Esta es la camiseta:%0A${detailsUrl}%0A%0A` +
+      const message = `Hola 😃👋,%0A%0A` +
+        `*¡Estoy interesad@ en una camiseta! ${detailsUrl} *%0A%0A` +
+        `* Equipo:* ${props.equipo}%0A` +
+        `* Tipo:* ${props.tipo}%0A` +
+        `* Kit:* ${props.kit}%0A` +
+        `* Temporada:* ${props.temporada}%0A` +
+        `* Talla seleccionada:* ${selectedSize}%0A` +
+        `* Precio en pagina:* ${props.precio}%0A` +
+        `* Descuento:* ${Offer > 0 ? `${Offer * 100}%` : 'No aplica'} %0A` +
+        `* Precio final:* ${props.precio - (props.precio * Offer)}%0A%0A` +
         `¡Gracias!`;
       
       // Abrir WhatsApp con el mensaje
@@ -141,7 +143,7 @@ function JerseyCard(props) {
             </Link> */}
             {selectedSize ? (
               <button
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center"
               onClick={handleBuy}
             >
               Comprar
@@ -155,7 +157,7 @@ function JerseyCard(props) {
             </button>
             )}
             <button
-              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold p-2 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center"
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold p-2 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center"
             >
               <img src={addCart} className="w-8" />
             </button>

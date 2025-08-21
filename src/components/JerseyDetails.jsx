@@ -1,21 +1,20 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import mockCamisetas from "../assets/mockCamisetas.json";
-import left from "../assets/left.svg";
-import right from "../assets/right.svg";
 
-function JerseyDetails() {
+function JerseyDetails(props) {
     const { id } = useParams();
     const [jersey, setJersey] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [selectedSize, setSelectedSize] = useState(null);
 
     const imageKeys = jersey ? Object.keys(jersey).filter(key => key.startsWith('imagen')) : [];
 
     const goToNextImage = () => {
         if (isTransitioning) return;
         setIsTransitioning(true);
-        setCurrentImageIndex((prevIndex) => 
+        setCurrentImageIndex((prevIndex) =>
             prevIndex === imageKeys.length - 1 ? 0 : prevIndex + 1
         );
         setTimeout(() => setIsTransitioning(false), 300);
@@ -24,7 +23,7 @@ function JerseyDetails() {
     const goToPrevImage = () => {
         if (isTransitioning) return;
         setIsTransitioning(true);
-        setCurrentImageIndex((prevIndex) => 
+        setCurrentImageIndex((prevIndex) =>
             prevIndex === 0 ? imageKeys.length - 1 : prevIndex - 1
         );
         setTimeout(() => setIsTransitioning(false), 300);
@@ -39,6 +38,37 @@ function JerseyDetails() {
 
     if (!jersey) {
         return <div className="text-center py-20">Cargando...</div>;
+    }
+
+    //Funcion para hacer la compra de la camiseta enviando un mensaje de whatsapp
+
+    //Funcion para seleccionar y deseleccionar la talla
+    const handleSizeSelect = (size) => {
+        setSelectedSize(size);
+    }
+
+    const handleBuy = () => {
+        if (selectedSize) {
+            const phoneNumber = "573245111382";
+            // Construir la URL de la página de detalles
+            const detailsUrl = `${window.location.origin}/regate_col/jersey/${props.id}`;
+
+            const message = `Hola 😃👋,%0A%0A` +
+                `*¡Estoy interesad@ en una camiseta! ${detailsUrl} *%0A%0A` +
+                `* Equipo:* ${props.equipo}%0A` +
+                `* Tipo:* ${props.tipo}%0A` +
+                `* Kit:* ${props.kit}%0A` +
+                `* Temporada:* ${props.temporada}%0A` +
+                `* Talla seleccionada:* ${selectedSize}%0A` +
+                `* Precio en pagina:* ${props.precio}%0A` +
+                `* Descuento:* ${Offer > 0 ? `${Offer * 100}%` : 'No aplica'} %0A` +
+                `* Precio final:* ${props.precio - (props.precio * Offer)}%0A%0A` +
+                `¡Gracias!`;
+
+            // Abrir WhatsApp con el mensaje
+            const url = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(url, '_blank');
+        }
     }
 
     return (
@@ -83,7 +113,7 @@ function JerseyDetails() {
                                 {Object.keys(jersey).filter(key => key.startsWith('imagen')).map((key) => (
                                     <button
                                         key={key}
-                                        onClick={() => setJersey({...jersey, imagenPrincipal: jersey[key]})}
+                                        onClick={() => setJersey({ ...jersey, imagenPrincipal: jersey[key] })}
                                         className="flex-shrink-0 w-16 h-16 cursor-pointer md:max-w-20 md:max-h-20 overflow-hidden rounded-lg hover:opacity-80 transition-opacity border-2 border-transparent hover:border-blue-500"
                                     >
                                         <img
@@ -93,11 +123,11 @@ function JerseyDetails() {
                                     </button>
                                 ))}
                             </div>
-                            
+
                             {/* Imagen principal */}
                             <div className="w-full relative">
                                 <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10">
-                                    <button 
+                                    <button
                                         className="p-2 rounded-full bg-white/80 hover:bg-gray-100 transition-colors shadow-md"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
@@ -110,7 +140,7 @@ function JerseyDetails() {
                                     className="w-full h-auto max-h-[500px] object-contain rounded-lg mx-auto"
                                 />
                                 <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10">
-                                    <button 
+                                    <button
                                         className="p-2 rounded-full bg-white/80 hover:bg-gray-100 transition-colors shadow-md"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
@@ -134,7 +164,7 @@ function JerseyDetails() {
                                 {new Intl.NumberFormat('es-CO', {
                                     style: 'currency',
                                     currency: 'COP'
-                                }).format(jersey.precio - (jersey.precio * (jersey.Offer*(jersey.stock<4?1:0))))}
+                                }).format(jersey.precio - (jersey.precio * (jersey.Offer * (jersey.stock < 4 ? 1 : 0))))}
                             </span>
                             {jersey.stock < 4 && jersey.Offer > 0 && (
                                 <span className="ml-4 text-s text-red-500 line-through">
@@ -156,24 +186,37 @@ function JerseyDetails() {
 
                         <div className="mb-6">
                             <h3 className="text-lg font-semibold mb-2">Tallas disponibles</h3>
-                            <div className="flex gap-2">
-                                {jersey.talla.map((talla) => (
-                                    <button
-                                        key={talla}
-                                        className="w-12 h-12 border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        {talla}
-                                    </button>
-                                ))}
-                            </div>
+                                <div className="flex gap-2">
+                                    {jersey.talla.map((talla) => (
+                                        <button
+                                            key={talla}
+                                            className={`w-12 h-12 border border-gray-300 rounded-md hover:bg-gray-100 ${selectedSize === talla ? 'bg-gradient-to-r from-orange-500 to-orange-700 text-white' : ''}`}
+                                            onClick={() => (selectedSize === talla ? setSelectedSize(null) : setSelectedSize(talla))}
+                                        >
+                                            {talla}
+                                        </button>
+                                    ))}
+                                </div>
                         </div>
 
                         <div className="flex gap-4">
+                            {selectedSize ? (
+                                <button
+                                    className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer text-center"
+                                    onClick={handleBuy}
+                                >
+                                    Comprar
+                                </button>
+                            ) : (
+                                <button
+                                    className="flex-1 bg-gradient-to-r from-gray-400 to-gray-600 text-gray-600 font-semibold py-3 rounded-lg cursor-not-allowed text-center"
+                                    onClick={handleBuy}
+                                >
+                                    Comprar
+                                </button>
+                            )}
                             <button className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
-                                Añadir al carrito
-                            </button>
-                            <button className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
-                                Comprar ahora
+                                Agregar al carrito
                             </button>
                         </div>
                     </div>

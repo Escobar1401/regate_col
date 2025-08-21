@@ -8,23 +8,26 @@ function JerseyDetails(props) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [selectedSize, setSelectedSize] = useState(null);
+    const [transitionDirection, setTransitionDirection] = useState('right');
 
     const imageKeys = jersey ? Object.keys(jersey).filter(key => key.startsWith('imagen')) : [];
 
     const goToNextImage = () => {
         if (isTransitioning) return;
+        setTransitionDirection('right');
         setIsTransitioning(true);
-        setCurrentImageIndex((prevIndex) =>
-            prevIndex === imageKeys.length - 1 ? 0 : prevIndex + 1
+        setCurrentImageIndex((prevKey) =>
+            prevKey === imageKeys.length - 1 ? 0 : prevKey + 1
         );
         setTimeout(() => setIsTransitioning(false), 300);
     };
 
     const goToPrevImage = () => {
         if (isTransitioning) return;
+        setTransitionDirection('left');
         setIsTransitioning(true);
-        setCurrentImageIndex((prevIndex) =>
-            prevIndex === 0 ? imageKeys.length - 1 : prevIndex - 1
+        setCurrentImageIndex((prevKey) =>
+            prevKey === 0 ? imageKeys.length - 1 : prevKey - 1
         );
         setTimeout(() => setIsTransitioning(false), 300);
     };
@@ -40,13 +43,12 @@ function JerseyDetails(props) {
         return <div className="text-center py-20">Cargando...</div>;
     }
 
-    //Funcion para hacer la compra de la camiseta enviando un mensaje de whatsapp
-
     //Funcion para seleccionar y deseleccionar la talla
     const handleSizeSelect = (size) => {
         setSelectedSize(size);
     }
-
+    
+    //Funcion para hacer la compra de la camiseta enviando un mensaje de whatsapp
     const handleBuy = () => {
         if (selectedSize) {
             const phoneNumber = "573245111382";
@@ -128,20 +130,30 @@ function JerseyDetails(props) {
                             <div className="w-full relative">
                                 <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10">
                                     <button
-                                        className="p-2 rounded-full bg-white/80 hover:bg-gray-100 transition-colors shadow-md"
+                                        onClick={() => goToPrevImage()}
+                                        className="p-2 cursor-pointer rounded-full bg-white/80 hover:bg-gray-100 transition-colors shadow-md"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                                         </svg>
                                     </button>
                                 </div>
-                                <img
-                                    src={jersey.imagenPrincipal}
-                                    className="w-full h-auto max-h-[500px] object-contain rounded-lg mx-auto"
-                                />
+                                <div className="relative w-full h-[500px] overflow-hidden">
+                                    <img
+                                        src={jersey[imageKeys[currentImageIndex]]}
+                                        className={`w-full h-full object-contain rounded-lg mx-auto transition-transform duration-300 ${
+                                            isTransitioning 
+                                                ? transitionDirection === 'right' 
+                                                    ? 'animate-slideInFromRight' 
+                                                    : 'animate-slideInFromLeft'
+                                                : ''
+                                        }`}
+                                    />
+                                </div>
                                 <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10">
                                     <button
-                                        className="p-2 rounded-full bg-white/80 hover:bg-gray-100 transition-colors shadow-md"
+                                        onClick={() => goToNextImage()}
+                                        className="animate-slideInFromRight p-2 cursor-pointer rounded-full bg-white/80 hover:bg-gray-100 transition-colors shadow-md"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />

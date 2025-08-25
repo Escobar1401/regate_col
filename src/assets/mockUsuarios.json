@@ -2,27 +2,18 @@
     {
         "id": 1,
         "imagenPerfil": "https://instagram.feoh4-4.fna.fbcdn.net/v/t51.2885-19/509982165_17847526641508741_8936664305916528106_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.feoh4-4.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QHQtG3EmP6tDqGAd5UnOSsmC2C9xqEHTfeTF6iHvIbS4vPt-6-mqRG3mirjKipU2VFSOmc4YbySNJ4Ksrg_zbKF&_nc_ohc=bj5hUN3-UEcQ7kNvwGD0sZt&_nc_gid=e8ogK9hmlIADHNBv7Gl3sA&edm=ACE-g0gBAAAA&ccb=7-5&oh=00_AfUNr87jjiE9U7tqXctpiVxlcryOI2OAlgZjlUXm7Vi54g&oe=68AC58FE&_nc_sid=b15361",
-        "nombre": "Felipe",
-        "apellido": "Escobar",
-        "email": "felipe.escobar@gmail.com",
+        "nombre": "Regate Col",
+        "apellido": "Admin",
+        "email": "regatecol.admin@gmail.com",
         "password": "123456",
         "rol": "admin"
     },
     {
         "id": 2,
-        "imagenPerfil": "",
-        "nombre": "Regate",
-        "apellido": "Col",
-        "email": "regate.col@gmail.com",
-        "password": "123456",
-        "rol": "admin"
-    },
-    {
-        "id": 3,
-        "imagenPerfil": "",
-        "nombre": "Usuario",
-        "apellido": "Normal",
-        "email": "usuario.normal@gmail.com",
+        "imagenPerfil": "https://instagram.feoh4-4.fna.fbcdn.net/v/t51.2885-19/509982165_17847526641508741_8936664305916528106_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.feoh4-4.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QHQtG3EmP6tDqGAd5UnOSsmC2C9xqEHTfeTF6iHvIbS4vPt-6-mqRG3mirjKipU2VFSOmc4YbySNJ4Ksrg_zbKF&_nc_ohc=bj5hUN3-UEcQ7kNvwGD0sZt&_nc_gid=e8ogK9hmlIADHNBv7Gl3sA&edm=ACE-g0gBAAAA&ccb=7-5&oh=00_AfUNr87jjiE9U7tqXctpiVxlcryOI2OAlgZjlUXm7Vi54g&oe=68AC58FE&_nc_sid=b15361",
+        "nombre": "Regate Col",
+        "apellido": "User",
+        "email": "regatecol.user@gmail.com",
         "password": "123456",
         "rol": "user"
     }
